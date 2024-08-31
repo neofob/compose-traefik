@@ -1,0 +1,16 @@
+---
+services:
+  traefik:
+    image: "traefik:latest"
+    container_name: "traefik"
+    hostname: "traefik"
+    command:
+      - "--api.insecure=true"
+      - "--entrypoints.web.address=:80"
+      - "--log.level=INFO"
+      - "--providers.file.filename=/etc/traefik.yml"
+    ports:
+      - "2600:80"
+      - "8080:8080" # Traefik Dashboard
+    volumes:
+      - "./traefik.yml:/etc/traefik.yml:ro"

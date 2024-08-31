@@ -1,0 +1,31 @@
+http:
+  services:
+    ollama_service:
+      loadBalancer:
+        servers:
+          - url: "http://${OLLAMA_HOST}:${OLLAMA_PORT}/"
+    gpt_service:
+      loadBalancer:
+        servers:
+          - url: "http://${GPT_HOST}:${GPT_PORT}/"
+    grafana_service:
+      loadBalancer:
+        servers:
+          - url: "http://${GRAFANA_HOST}:${GRAFANA_PORT}/"
+
+  routers:
+    ollama_router:
+      rule: "ClientIP(`192.168.0.0/16`)"
+      service: "ollama_service"
+      entryPoints:
+        - "ollama_ep"
+    gpt_router:
+      rule: "Host(`gpt.g0.ovpn`)"
+      service: "gpt_service"
+      entryPoints:
+        - "gpt_ep"
+    grafana_router:
+      rule: "Host(`grafana.g0.ovpn`)"
+      service: "grafana_service"
+      entryPoints:
+        - "grafana_ep"

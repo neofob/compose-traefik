@@ -1,0 +1,21 @@
+---
+# Atm, entrypoint is defined at commandline
+services:
+  traefik:
+    image: "traefik:latest"
+    container_name: "traefik"
+    hostname: "traefik"
+    command:
+      - "--api.insecure=true"
+      - "--log.level=DEBUG"
+      - "--entrypoints.gpt_ep.address=:8001"
+      - "--entrypoints.grafana_ep.address=:3000"
+      - "--entrypoints.ollama_ep.address=:11434"
+      - "--providers.file.filename=/etc/traefik/traefik-ollama.yml"
+    ports:
+      - "11434:11434"
+      - "3000:3000"
+      - "8001:8001"
+      - "8080:8080" # Traefik Dashboard
+    volumes:
+      - "./traefik:/etc/traefik:ro"
