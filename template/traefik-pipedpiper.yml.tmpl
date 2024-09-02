@@ -1,0 +1,73 @@
+# Generate your own self-signed cert here
+#tls:
+#  stores:
+#    default:
+#      defaultCertificate:
+#        certFile: /etc/certs/anton.pipedpiper.ovpn.pem
+#        keyFile:  /etc/certs/anton.pipedpiper.ovpn.key
+#  certificates:
+#    - certFile: /etc/certs/anton.pipedpiper.ovpn.pem
+#      keyFile:  /etc/certs/anton.pipedpiper.ovpn.key
+#      stores:
+#        - default
+#
+
+
+http:
+  services:
+    auth_service:
+      loadBalancer:
+        servers:
+          - url: "https://${AUTH_HOST}:443/"
+    grafana_service:
+      loadBalancer:
+        servers:
+          - url: "https://${WWW_HOST}:443/"
+    ollama_service:
+      loadBalancer:
+        servers:
+          - url: "https://${WWW_HOST}:443/"
+    gpt_service:
+      loadBalancer:
+        servers:
+          - url: "https://${WWW_HOST}:443/"
+    www_service:
+      loadBalancer:
+        servers:
+          - url: "https://${WWW_HOST}:443/"
+
+  routers:
+    auth_router:
+      rule: "Host(`auth.anton.pipedpiper.ovpn`)"
+      service: "auth_service"
+      entryPoints:
+        - "anton_ep"
+      tls: {}
+
+    grafana_router:
+      rule: "Host(`grafana.anton.pipedpiper.ovpn`)"
+      service: "grafana_service"
+      entryPoints:
+        - "anton_ep"
+      tls: {}
+
+    gpt_router:
+      rule: "Host(`gpt.anton.pipedpiper.ovpn`)"
+      service: "gpt_service"
+      entryPoints:
+        - "anton_ep"
+      tls: {}
+
+    ollama_router:
+      rule: "Host(`ollama.anton.pipedpiper.ovpn`)"
+      service: "ollama_service"
+      entryPoints:
+        - "anton_ep"
+      tls: {}
+
+    www_router:
+      rule: "Host(`www.anton.pipedpiper.ovpn`)"
+      service: "www_service"
+      entryPoints:
+        - "anton_ep"
+      tls: {}

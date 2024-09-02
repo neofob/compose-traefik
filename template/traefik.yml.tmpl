@@ -1,3 +1,5 @@
+# Simple http config
+
 http:
   services:
     ollama_service:
@@ -20,12 +22,12 @@ http:
       entryPoints:
         - "ollama_ep"
     gpt_router:
-      rule: "Host(`gpt.g0.ovpn`)"
+      rule: "Host(`gpt.pipedpiper.ovpn`)"
       service: "gpt_service"
       entryPoints:
         - "gpt_ep"
     grafana_router:
-      rule: "Host(`grafana.g0.ovpn`)"
+      rule: "Host(`grafana.pipedpiper.ovpn`)"
       service: "grafana_service"
       entryPoints:
         - "grafana_ep"
