@@ -12,6 +12,8 @@
 #        - default
 #
 
+# anton_ep: port 443
+
 
 http:
   services:
@@ -26,11 +28,15 @@ http:
     ollama_service:
       loadBalancer:
         servers:
-          - url: "https://${OLLAM_HOST}:443/"
+          - url: "http://${OLLAMA_HOST}:${OLLAMA_PORT}/"
     gpt_service:
       loadBalancer:
         servers:
           - url: "https://${GPT_HOST}:443/"
+    udpt_service:
+      loadBalancer:
+        servers:
+          - url: "http://${UDPT_HOST}:${UDPT_PORT}/"
     www_service:
       loadBalancer:
         servers:
@@ -62,8 +68,13 @@ http:
       rule: "Host(`ollama.anton.pipedpiper.ovpn`)"
       service: "ollama_service"
       entryPoints:
-        - "anton_ep"
-      tls: {}
+        - "ollama_ep"
+
+    udpt_router:
+      rule: "Host(`udpt.anton.pipedpiper.ovpn`)"
+      service: "udpt_service"
+      entryPoints:
+        - "udpt_ep"
 
     www_router:
       rule: "Host(`www.anton.pipedpiper.ovpn`)"
