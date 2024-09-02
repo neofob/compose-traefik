@@ -22,15 +22,15 @@ http:
     grafana_service:
       loadBalancer:
         servers:
-          - url: "https://${WWW_HOST}:443/"
+          - url: "https://${GRAFANA_HOST}:443/"
     ollama_service:
       loadBalancer:
         servers:
-          - url: "https://${WWW_HOST}:443/"
+          - url: "https://${OLLAM_HOST}:443/"
     gpt_service:
       loadBalancer:
         servers:
-          - url: "https://${WWW_HOST}:443/"
+          - url: "https://${GPT_HOST}:443/"
     www_service:
       loadBalancer:
         servers:
