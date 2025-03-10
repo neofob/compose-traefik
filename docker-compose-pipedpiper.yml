@@ -7,12 +7,23 @@ services:
     image: "traefik:latest"
     container_name: "traefik_pipedpiper"
     hostname: "traefik_pipedpiper"
+    restart: unless-stopped
     command:
       - "--api.insecure=true"
       - "--log.level=DEBUG"
+      - "--entrypoints.jetkvm_ep.address=:2600"
+      - "--entrypoints.gpt_ep.address=:8001"
+      - "--entrypoints.grafana_ep.address=:3000"
+      - "--entrypoints.ollama_ep.address=:11434"
       - "--entrypoints.anton_ep.address=:443"
       - "--providers.file.filename=/etc/traefik.yml"
     ports:
+# Right-hand side are endpoints
+# Left-hand side are the host ports
+      - "2600:2600" # jetkvm
+      - "11434:11434"
+      - "3000:3000"
+      - "8001:8001"
       - "443:443"
       - "8080:8080" # Traefik Dashboard
     volumes:

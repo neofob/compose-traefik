@@ -43,6 +43,12 @@ http:
           - url: "https://${WWW_HOST}:443/"
 
   routers:
+    jetkvm_router:
+      rule: "Host(`jetkvm.pipedpiper.ovpn`)"
+      service: "jetkvm_service"
+      entryPoints:
+        - "jetkvm_ep"
+
     auth_router:
       rule: "Host(`auth.anton.pipedpiper.ovpn`)"
       service: "auth_service"

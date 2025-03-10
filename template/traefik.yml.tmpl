@@ -2,6 +2,10 @@
 
 http:
   services:
+    jetkvm_service:
+      loadBalancer:
+        servers:
+          - url: "http://${JETKVM_HOST}:${JETKVM_PORT}/"
     ollama_service:
       loadBalancer:
         servers:
@@ -14,8 +18,17 @@ http:
       loadBalancer:
         servers:
           - url: "http://${GRAFANA_HOST}:${GRAFANA_PORT}/"
+    gpsd_service:
+      loadBalancer:
+        servers:
+          - url: "http://${GPSD_HOST}:${GPSD_PORT}/"
 
   routers:
+    jetkvm_router:
+      rule: "Host(`jetkvm.pipedpiper.ovpn`)"
+      service: "jetkvm_service"
+      entryPoints:
+        - "jetkvm_ep"
     ollama_router:
       rule: "ClientIP(`192.168.0.0/16`)"
       service: "ollama_service"
@@ -31,3 +44,8 @@ http:
       service: "grafana_service"
       entryPoints:
         - "grafana_ep"
+    gpsd_router:
+      rule: "Host(`gpsd.pipedpiper.ovpn`)"
+      service: "gpsd_service"
+      entryPoints:
+        - "gpsd_ep"
