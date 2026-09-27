@@ -1,0 +1,41 @@
+---
+# Use /etc/hosts or your own DNS server such as pihole, operwrt..etc. for hostname resolution
+# See this gist for weighted Ollama load balance setup
+# * https://gist.github.com/neofob/aefa112c6823f799407fc2ae35d57411?permalink_comment_id=6390712#gistcomment-6390712
+http:
+  services:
+    ollama_service:
+      loadBalancer:
+        servers:
+          # ollama minion 0
+          - url: "http://ollama0.local:11434/"
+          # ollama minion 1
+          - url: "http://ollama1.local:11434/"
+          # ollama minion 2
+          #- url: "http://ollama2.local:11434/"
+    ollama1_service:
+      loadBalancer:
+        servers:
+          # ollama minion 1
+          - url: "http://ollama1.local:11434/"
+    ollama2_service:
+      loadBalancer:
+        servers:
+          # ollama minion 2
+          - url: "http://ollama2.local:11434/"
+  routers:
+    ollama_router:
+      rule: "Host(`ollama.piped-piper.ovpn`)"
+      service: "ollama_service"
+      entryPoints:
+        - "ollama_ep"
+    ollama1_router:
+      rule: "Host(`ollama1.piped-piper.ovpn`)"
+      service: "ollama1_service"
+      entryPoints:
+        - "ollama_ep"
+    ollama2_router:
+      rule: "Host(`ollama2.piped-piper.ovpn`)"
+      service: "ollama2_service"
+      entryPoints:
+        - "ollama_ep"
